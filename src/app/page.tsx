@@ -26,43 +26,53 @@ const products = [
     image: "/rosemary.jpg",
     amazonLink: "https://www.amazon.com/dp/B0F6VCJTCY",
   },
-]
+];
+
 export default function Home() {
   return (
     <main className="bg-light text-dark font-sans">
       <Navbar />
 
       {/* Hero Section */}
-  <section
-        className="relative w-full min-h-screen bg-cover bg-center"
-        style={{ backgroundImage: "url('/mediterranean-bg.jpg')" }} // Görsel yolunu doğru ver
-      >
+      <section className="relative w-full min-h-screen overflow-hidden">
+        {/* 🎥 Background Video */}
+        <video
+          className="absolute top-0 left-0 w-full h-full object-cover z-0"
+          autoPlay
+          muted
+          loop
+          playsInline
+        >
+          <source src="/ocean_final.mp4" type="video/mp4" />
+        </video>
+
         {/* Overlay */}
-        <div className="absolute inset-0 bg-black/40" />
+        <div className="absolute inset-0 bg-black/40 z-10" />
 
         {/* İçerik */}
-        <div className="relative z-10 flex flex-col items-center justify-center h-[calc(100vh-80px)] text-center px-4">
+        <div className="relative z-20 flex flex-col items-center justify-center h-[calc(100vh-80px)] text-center px-4">
           <Image
-            src="/orwey beyaz logo2.png" // Logo dosyan varsa buraya SVG ekle
+            src="/orwey beyaz logo2.png"
             alt="ORWEY-M Logo"
             width={350}
             height={100}
             className="mb-2"
           />
           <h1 className="text-5xl md:text-7xl font-bold text-white drop-shadow-lg">
-        ORWEY-M 
+            ORWEY-M 
           </h1>
-        <p className="mt-6 text-lg md:text-2xl text-white font-medium drop-shadow">
-        Rediscover your beauty with the natural power of the Mediterranean.
-        </p>
+          <p className="mt-6 text-lg md:text-2xl text-white font-medium drop-shadow">
+            Rediscover your beauty with the natural power of the Mediterranean.
+          </p>
           <a
             href="#products"
-            className="mt-10 inline-block bg-white text-black font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-gray-200 transition text-lg">
+            className="mt-10 inline-block bg-white text-black font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-gray-200 transition text-lg"
+          >
             Discover ORWEY-M
           </a>
         </div>
       </section>
-      
+
       {/* Products / Brands Section */}
       <section id="products" className="py-20 bg-white text-center transition-all duration-500">
         <h2 className="text-4xl font-bold text-gray-800 mb-12">Our Products</h2>
@@ -109,5 +119,5 @@ export default function Home() {
         </div>
       </div>
     </main>
-  )
+  );
 }
