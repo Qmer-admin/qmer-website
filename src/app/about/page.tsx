@@ -36,7 +36,7 @@ export default function AboutPage() {
                         We believe in transparency, high-quality ingredients, and sustainable practices.
                     </p>
                     <p>
-                        Whether it's our exfoliating serums or organic essential oils, every drop is crafted to provide a premium experience for our customers across the globe.
+                        Whether it&apos;s our exfoliating serums or organic essential oils, every drop is crafted to provide a premium experience for our customers across the globe.
                     </p>
                 </div>
             </div>
