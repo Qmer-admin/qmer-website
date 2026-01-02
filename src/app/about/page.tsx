@@ -1,49 +1,44 @@
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
-import Image from 'next/image';
-
 export default function AboutPage() {
   return (
-    <main className="min-h-screen bg-white">
-      <Navbar />
+    <main className="min-h-screen bg-[#FDFCF8]">
       
-      {/* Header */}
-      <div className="bg-gray-900 text-white pt-32 pb-20 px-4 text-center">
-        <h1 className="text-4xl md:text-5xl font-bold">About QMER LLC</h1>
-      </div>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <div className="flex flex-col md:flex-row items-center gap-16">
-            {/* Görsel */}
-            <div className="w-full md:w-1/2 relative aspect-square rounded-2xl overflow-hidden shadow-2xl">
-                <Image 
-                    src="/aipic1.png" 
-                    alt="Mediterranean Beauty" 
-                    fill 
-                    className="object-cover"
-                />
-            </div>
-            
-            {/* Metin */}
-            <div className="w-full md:w-1/2">
-                <h2 className="text-3xl font-bold text-gray-900 mb-6">Inspired by the Mediterranean</h2>
-                <div className="space-y-4 text-gray-600 text-lg leading-relaxed">
-                    <p>
-                        ORWEY‑M blends ancient botanical traditions of the Mediterranean with modern skincare science. 
-                    </p>
-                    <p>
-                        Founded under <strong>QMER LLC</strong>, our mission is to bring natural beauty to life with purity and effectiveness. 
-                        We believe in transparency, high-quality ingredients, and sustainable practices.
-                    </p>
-                    <p>
-                        Whether it&apos;s our exfoliating serums or organic essential oils, every drop is crafted to provide a premium experience for our customers across the globe.
-                    </p>
-                </div>
-            </div>
+      {/* Header - Daha Modern */}
+      <div className="relative py-32 bg-stone-900 text-white overflow-hidden">
+        <div className="absolute inset-0 opacity-20 bg-[url('/mediterranean-bg.jpg')] bg-cover bg-center"></div>
+        <div className="relative z-10 container mx-auto px-4 text-center">
+            <span className="text-emerald-400 font-bold tracking-[0.3em] text-xs uppercase mb-4 block">Our Heritage</span>
+            <h1 className="text-5xl md:text-6xl font-serif font-medium tracking-tight">The Story of QMER</h1>
         </div>
       </div>
 
-      <Footer />
+      <div className="max-w-5xl mx-auto px-4 py-24">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+            {/* Metin Sol */}
+            <div className="space-y-6">
+                <h2 className="text-3xl font-serif text-gray-900">Inspired by the<br/>Ancient Mediterranean.</h2>
+                <div className="w-12 h-1 bg-emerald-800"></div>
+                <div className="text-stone-600 leading-relaxed font-light space-y-4 text-lg">
+                    <p>
+                        It started with a simple question: <em>Can we bottle the essence of nature without losing its power?</em>
+                    </p>
+                    <p>
+                        ORWEY‑M blends ancient botanical traditions of the Mediterranean with modern skincare science. Founded under <strong>QMER LLC</strong>, our mission is to bring natural beauty to life with purity and effectiveness.
+                    </p>
+                    <p>
+                        We believe in transparency, high-quality ingredients, and sustainable practices that honor both your skin and the earth.
+                    </p>
+                </div>
+            </div>
+
+            {/* Görsel Sağ (Placeholder Renk) */}
+            <div className="relative aspect-[4/5] bg-stone-200 rounded-lg overflow-hidden shadow-2xl rotate-3 hover:rotate-0 transition-transform duration-700">
+                 {/* Buraya ileride about-image.jpg koyabilirsin */}
+                 <div className="absolute inset-0 flex items-center justify-center text-stone-400 font-serif italic text-2xl">
+                    Image: Nature & Science
+                 </div>
+            </div>
+        </div>
+      </div>
     </main>
   );
 }
