@@ -60,9 +60,13 @@ const Footer = () => {
         {/* Alt Telif */}
         <div className="pt-8 border-t border-stone-800 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-stone-600">
           <p>&copy; {new Date().getFullYear()} {siteConfig.company}. All rights reserved.</p>
-          <div className="flex gap-4">
-              <span className="hover:text-stone-400 cursor-pointer">Privacy Policy</span>
-              <span className="hover:text-stone-400 cursor-pointer">Terms of Service</span>
+          <div className="flex gap-6">
+              <Link href="/privacy" className="hover:text-stone-400 transition-colors cursor-pointer">
+                Privacy Policy
+              </Link>
+              <Link href="/terms" className="hover:text-stone-400 transition-colors cursor-pointer">
+                Terms of Service
+              </Link>
           </div>
         </div>
       </div>
