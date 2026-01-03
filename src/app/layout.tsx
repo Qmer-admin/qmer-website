@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { siteConfig } from "@/lib/data";
+import GoogleAnalytics from "@/components/GoogleAnalytics";
 
 // 1. FONT AYARLARI (Premium His İçin)
 // Başlıklar için serif font (Playfair Display)
@@ -73,6 +74,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <body className={`${playfair.variable} ${lato.variable} font-sans antialiased bg-[#FDFCF8] text-stone-900`}>
+        <GoogleAnalytics />
         <Navbar />
         {children}
         <Footer />
