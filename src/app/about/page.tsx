@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import React from 'react';
 
 export default function AboutPage() {
@@ -34,12 +35,13 @@ export default function AboutPage() {
           {/* --- SAĞ TARAFTAKİ GÖRSEL ALANI --- */}
           <div className="w-full md:w-1/2 relative group">
              {/* Görsel Kutusu */}
-             <div className="relative z-10 overflow-hidden rounded-sm shadow-2xl bg-gray-200">
-               {/* Next.js Image kullanıyorsan onu tercih et, yoksa standart img etiketi: */}
-               <img 
+             <div className="relative z-10 overflow-hidden rounded-sm shadow-2xl bg-gray-200 aspect-[4/5]">
+               <Image 
                  src="/orwey-natural.png" 
                  alt="ORWEY-M Natural Skincare Collection" 
-                 className="w-full h-auto object-cover transform transition-transform duration-700 group-hover:scale-105"
+                 fill
+                 className="object-cover transform transition-transform duration-700 group-hover:scale-105"
+                 sizes="(max-width: 768px) 100vw, 50vw"
                />
              </div>
              

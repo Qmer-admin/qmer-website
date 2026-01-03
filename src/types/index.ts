@@ -1,6 +1,7 @@
 // src/types/index.ts
 export interface Product {
   id: string;
+  category: string;
   name: string;
   slug: string; // URL dostu isim
   shortDescription: string;
