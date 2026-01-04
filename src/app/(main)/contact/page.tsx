@@ -1,3 +1,5 @@
+// src/app/(main)/contact/page.tsx
+
 'use client'; // 1. State kullanacağımız için bu şart
 import { useState } from 'react';
 import { siteConfig } from '@/lib/data';

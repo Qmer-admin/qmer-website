@@ -95,7 +95,7 @@ export default function EditForm({ product }: EditFormProps) {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center border-t border-stone-100 pt-6">
             <div>
                 <label className="block text-xs font-bold text-stone-500 uppercase tracking-widest mb-2">Amazon Link</label>
-                <input name="amazonLink" type="url" required defaultValue={product.amazonLink} className="w-full bg-stone-50 border border-stone-200 p-3 rounded-sm focus:border-emerald-800 outline-none" />
+                <input name="amazonLink" type="url" defaultValue={product.amazonLink || ""} className="w-full bg-stone-50 border border-stone-200 p-3 rounded-sm focus:border-emerald-800 outline-none" />
             </div>
             
             <div className="flex gap-8">

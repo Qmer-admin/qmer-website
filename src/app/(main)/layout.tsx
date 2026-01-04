@@ -1,9 +1,10 @@
+// src/app/(main)/layout.tsx
+
 import type { Metadata } from "next";
 import { Playfair_Display, Lato } from "next/font/google"; // Fontları da premium yapalım
-import "./globals.css";
+import "@/app/globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { siteConfig } from "@/lib/data";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 
 // 1. FONT AYARLARI (Premium His İçin)

@@ -1,8 +1,14 @@
-// src/app/login/page.tsx
+// src/app/(main)/login/page.tsx
 
 import React from 'react';
 import LoginForm from '@/components/LoginForm';
 import Link from 'next/link';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: "Login",
+  description: "Sign in to your QMER account.",
+};
 
 export default function LoginPage() {
   return (
@@ -14,7 +20,10 @@ export default function LoginPage() {
           <div className="absolute inset-0 bg-stone-900/5"></div>
       </div>
 
-      {/* Üst Logo/Home Link */}
+      {/* Üst Logo/Home Link 
+          NOT: (main) layout'unda Navbar olduğu için bu logo Navbar ile birlikte görünecektir.
+          Eğer sadece bu logoyu istiyorsanız, bu sayfayı (auth) grubuna taşımanız gerekir.
+      */}
       <div className="absolute top-8 left-8 z-20">
          <Link href="/" className="text-2xl font-serif font-bold text-emerald-900 tracking-tighter hover:opacity-80 transition-opacity">
             QMER.

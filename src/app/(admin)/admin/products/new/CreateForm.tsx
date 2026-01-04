@@ -1,16 +1,13 @@
-// src/app/admin/products/new/page.tsx
+// src/app/(admin)/admin/products/new/CreateForm.tsx
 "use client";
 
 import { createProduct } from "@/actions/product-actions";
-import Link from "next/link";
 import { useState } from "react";
-import ImageUploader from "@/components/ImageUploader"; // <--- Import ettik
+import ImageUploader from "@/components/ImageUploader";
 
-export default function NewProductPage() {
+export default function CreateForm() {
   const [name, setName] = useState("");
   const [slug, setSlug] = useState("");
-  
-  // Resimlerin listesini tutacak state
   const [images, setImages] = useState<string[]>([]);
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -20,34 +17,21 @@ export default function NewProductPage() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto pb-20">
-      
-      <div className="flex items-center justify-between mb-8">
-        <div>
-           <h1 className="text-3xl font-serif text-gray-900">Add New Product</h1>
-           <p className="text-stone-500 text-sm mt-1">Fill in the details to create a new product.</p>
-        </div>
-        <Link href="/admin" className="text-stone-500 hover:text-stone-900 text-sm font-bold uppercase tracking-wider flex items-center gap-2">
-           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
-           Back to List
-        </Link>
-      </div>
-
-      <form action={createProduct} className="bg-white p-8 border border-stone-200 shadow-sm rounded-sm space-y-8">
+    <form action={createProduct} className="bg-white p-8 border border-stone-200 shadow-sm rounded-sm space-y-8">
         
-        {/* --- 1. Temel Bilgiler --- */}
+        {/* Temel Bilgiler */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
                 <label className="block text-xs font-bold text-stone-500 uppercase tracking-widest mb-2">Product Name</label>
-                <input name="name" type="text" required value={name} onChange={handleNameChange} className="w-full bg-stone-50 border border-stone-200 p-3 rounded-sm focus:border-emerald-800 outline-none transition-colors" placeholder="e.g. Regenerating Serum" />
+                <input name="name" type="text" required value={name} onChange={handleNameChange} placeholder="e.g. Revitalizing Night Cream" className="w-full bg-stone-50 border border-stone-200 p-3 rounded-sm focus:border-emerald-800 outline-none transition-colors" />
             </div>
             <div>
                 <label className="block text-xs font-bold text-stone-500 uppercase tracking-widest mb-2">Slug (URL)</label>
-                <input name="slug" type="text" required value={slug} onChange={(e) => setSlug(e.target.value)} className="w-full bg-stone-100 border border-stone-200 p-3 rounded-sm text-stone-600 font-mono text-sm focus:border-emerald-800 outline-none" />
+                <input name="slug" type="text" required value={slug} onChange={(e) => setSlug(e.target.value)} placeholder="e.g. revitalizing-night-cream" className="w-full bg-stone-100 border border-stone-200 p-3 rounded-sm text-stone-600 font-mono text-sm focus:border-emerald-800 outline-none" />
             </div>
         </div>
 
-        {/* --- 2. Kategori ve Fiyat --- */}
+        {/* Kategori ve Fiyat */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
              <div>
                 <label className="block text-xs font-bold text-stone-500 uppercase tracking-widest mb-2">Category</label>
@@ -60,7 +44,7 @@ export default function NewProductPage() {
             </div>
             <div>
                 <label className="block text-xs font-bold text-stone-500 uppercase tracking-widest mb-2">Price</label>
-                <input name="price" type="number" step="0.01" required className="w-full bg-stone-50 border border-stone-200 p-3 rounded-sm focus:border-emerald-800 outline-none" placeholder="0.00" />
+                <input name="price" type="number" step="0.01" required placeholder="0.00" className="w-full bg-stone-50 border border-stone-200 p-3 rounded-sm focus:border-emerald-800 outline-none" />
             </div>
             <div>
                 <label className="block text-xs font-bold text-stone-500 uppercase tracking-widest mb-2">Currency</label>
@@ -71,71 +55,64 @@ export default function NewProductPage() {
             </div>
         </div>
 
-        {/* --- 3. Açıklamalar --- */}
+        {/* Açıklamalar */}
         <div>
             <label className="block text-xs font-bold text-stone-500 uppercase tracking-widest mb-2">Short Description</label>
-            <textarea name="shortDescription" rows={2} required className="w-full bg-stone-50 border border-stone-200 p-3 rounded-sm focus:border-emerald-800 outline-none resize-none" placeholder="Brief summary (max 150 chars)"></textarea>
+            <textarea name="shortDescription" rows={2} required placeholder="Brief summary for cards..." className="w-full bg-stone-50 border border-stone-200 p-3 rounded-sm focus:border-emerald-800 outline-none resize-none"></textarea>
         </div>
 
         <div>
             <label className="block text-xs font-bold text-stone-500 uppercase tracking-widest mb-2">Full Description</label>
-            <textarea name="description" rows={5} required className="w-full bg-stone-50 border border-stone-200 p-3 rounded-sm focus:border-emerald-800 outline-none" placeholder="Detailed product information..."></textarea>
+            <textarea name="description" rows={5} required placeholder="Detailed product information..." className="w-full bg-stone-50 border border-stone-200 p-3 rounded-sm focus:border-emerald-800 outline-none"></textarea>
         </div>
 
-        {/* --- 4. GÖRSELLER VE ÖZELLİKLER (GÜNCELLENDİ) --- */}
+        {/* GÖRSELLER VE ÖZELLİKLER */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            
-            {/* SOL TARAF: RESİM YÜKLEME ALANI */}
             <div>
                 <label className="block text-xs font-bold text-stone-500 uppercase tracking-widest mb-2">Product Images</label>
                 
-                {/* Yeni Component'imiz Burada */}
-                <ImageUploader onImagesChange={setImages} />
-
-                {/* GİZLİ INPUT: Server Action'a veriyi taşıyan köprü */}
-                {/* Resim yollarını 'alt satıra' bölerek string haline getirip gönderiyoruz */}
+                {/* Yeni ürün olduğu için defaultImages boş */}
+                <ImageUploader onImagesChange={setImages} defaultImages={[]} />
+                
                 <input type="hidden" name="images" value={images.join('\n')} />
             </div>
 
-            {/* SAĞ TARAF: ÖZELLİKLER */}
             <div>
                 <label className="block text-xs font-bold text-stone-500 uppercase tracking-widest mb-2">Features</label>
                 <p className="text-[10px] text-stone-400 mb-2">One feature per line.</p>
                 <textarea 
                     name="features" 
-                    rows={12} // Resim alanı büyüdüğü için bunu da uzattık
+                    rows={12} 
+                    placeholder="- Organic Ingredients&#10;- Cruelty Free&#10;- Dermatologist Tested"
                     className="w-full bg-stone-50 border border-stone-200 p-3 rounded-sm focus:border-emerald-800 outline-none"
-                    placeholder="Vegan&#10;Cruelty Free&#10;Dermatologist Tested"
                 ></textarea>
             </div>
         </div>
 
-        {/* --- 5. Durum ve Linkler --- */}
+        {/* Durum ve Linkler */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center border-t border-stone-100 pt-6">
             <div>
-                <label className="block text-xs font-bold text-stone-500 uppercase tracking-widest mb-2">Amazon Link</label>
-                <input name="amazonLink" type="url" required className="w-full bg-stone-50 border border-stone-200 p-3 rounded-sm focus:border-emerald-800 outline-none" placeholder="https://amazon.com/..." />
+                <label className="block text-xs font-bold text-stone-500 uppercase tracking-widest mb-2">Amazon Link (Optional)</label>
+                <input name="amazonLink" type="url" placeholder="https://amazon.com/..." className="w-full bg-stone-50 border border-stone-200 p-3 rounded-sm focus:border-emerald-800 outline-none" />
             </div>
             
             <div className="flex gap-8">
                 <label className="flex items-center gap-3 cursor-pointer group">
-                    <input name="stock" type="checkbox" defaultChecked className="w-5 h-5 text-emerald-900 border-stone-300 rounded focus:ring-emerald-900" />
+                    <input name="stock" type="checkbox" defaultChecked={true} className="w-5 h-5 text-emerald-900 border-stone-300 rounded focus:ring-emerald-900" />
                     <span className="text-sm font-bold text-stone-700 group-hover:text-emerald-800">In Stock</span>
                 </label>
                 <label className="flex items-center gap-3 cursor-pointer group">
-                    <input name="isNew" type="checkbox" className="w-5 h-5 text-emerald-900 border-stone-300 rounded focus:ring-emerald-900" />
+                    <input name="isNew" type="checkbox" defaultChecked={true} className="w-5 h-5 text-emerald-900 border-stone-300 rounded focus:ring-emerald-900" />
                     <span className="text-sm font-bold text-stone-700 group-hover:text-emerald-800">Mark as New</span>
                 </label>
             </div>
         </div>
 
-        {/* Submit */}
-        <div className="pt-4">
-            <button type="submit" className="w-full bg-emerald-900 text-white font-bold uppercase tracking-widest py-4 rounded-sm hover:bg-emerald-800 transition-all shadow-lg">
+        <div className="pt-4 flex gap-4">
+            <button type="submit" className="flex-1 bg-emerald-900 text-white font-bold uppercase tracking-widest py-4 rounded-sm hover:bg-emerald-800 transition-all shadow-lg">
                 Create Product
             </button>
         </div>
-      </form>
-    </div>
+    </form>
   );
 }

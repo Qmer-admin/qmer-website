@@ -67,13 +67,16 @@ const ProductCard = ({ product }: ProductCardProps) => {
              </span>
           </div>
           
-          <Link 
-            href={product.amazonLink}
-            target="_blank"
-            className="flex-1 bg-stone-900 hover:bg-[#2C5F2D] text-white text-[11px] font-bold uppercase tracking-[0.15em] py-3.5 px-4 rounded-sm text-center transition-all duration-300 shadow-md hover:shadow-lg"
-          >
-            Buy on Amazon
-          </Link>
+          {product.amazonLink && (
+            <Link 
+              href={product.amazonLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex-1 bg-stone-900 hover:bg-[#2C5F2D] text-white text-[11px] font-bold uppercase tracking-[0.15em] py-3.5 px-4 rounded-sm text-center transition-all duration-300 shadow-md hover:shadow-lg"
+            >
+              Buy on Amazon
+            </Link>
+          )}
         </div>
       </div>
     </div>

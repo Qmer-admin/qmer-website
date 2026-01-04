@@ -1,3 +1,5 @@
+// src/app/(main)/terms/page.tsx
+
 import React from 'react';
 import { siteConfig } from '@/lib/data';
 

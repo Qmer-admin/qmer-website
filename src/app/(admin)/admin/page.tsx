@@ -6,6 +6,9 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { deleteProduct, duplicateProduct } from '@/actions/product-actions';
 
+// Admin panelinin her zaman güncel veriyi çekmesini sağlar (Cache kapatma)
+export const dynamic = 'force-dynamic';
+
 export default async function AdminDashboard() {
   // Veritabanından ürünleri çek (En son eklenen en üstte)
   const products = await prisma.product.findMany({

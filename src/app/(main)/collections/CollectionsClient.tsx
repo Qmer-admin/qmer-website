@@ -1,4 +1,4 @@
-// src/app/collections/CollectionsClient.tsx
+// src/app/(main)/collections/CollectionsClient.tsx
 "use client";
 
 import React, { useState, useMemo } from 'react';

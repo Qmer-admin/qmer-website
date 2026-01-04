@@ -16,7 +16,8 @@ export async function createProduct(formData: FormData) {
   const isNew = formData.get("isNew") === "on";
   const shortDescription = formData.get("shortDescription") as string;
   const description = formData.get("description") as string;
-  const amazonLink = formData.get("amazonLink") as string;
+  // Boş string gelirse null olarak kaydet
+  const amazonLink = (formData.get("amazonLink") as string) || null;
   
   const imagesRaw = formData.get("images") as string;
   const images = imagesRaw ? imagesRaw.split('\n').map(s => s.trim()).filter(s => s !== '') : [];
@@ -107,7 +108,8 @@ export async function updateProduct(formData: FormData) {
   const isNew = formData.get("isNew") === "on";
   const shortDescription = formData.get("shortDescription") as string;
   const description = formData.get("description") as string;
-  const amazonLink = formData.get("amazonLink") as string;
+  // Boş string gelirse null olarak kaydet
+  const amazonLink = (formData.get("amazonLink") as string) || null;
   
   const imagesRaw = formData.get("images") as string;
   const images = imagesRaw ? imagesRaw.split('\n').map(s => s.trim()).filter(s => s !== '') : [];

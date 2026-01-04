@@ -10,7 +10,7 @@ export interface Product {
   currency: 'USD' | 'EUR';
   createdAt?: Date | string;
   updatedAt?: Date | string;
-  amazonLink: string;
+  amazonLink: string | null;
   images: string[]; // Array yapısında
   features: string[];
   stock: boolean;

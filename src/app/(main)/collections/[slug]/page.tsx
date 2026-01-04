@@ -1,4 +1,4 @@
-// src/app/collections/[slug]/page.tsx
+// src/app/(main)/collections/[slug]/page.tsx
 
 import React from 'react';
 import Image from 'next/image';
@@ -11,6 +11,21 @@ interface PageProps {
   params: Promise<{
     slug: string;
   }>;
+}
+
+// Sayfanın belirli aralıklarla (1 saat) güncellenmesini sağlar (ISR)
+export const revalidate = 3600;
+
+// Bu fonksiyon, build zamanında hangi slug'ların statik olarak oluşturulacağını belirler.
+// Bu sayede kullanıcılar sayfaya girdiğinde veritabanı sorgusu beklemez, hazır HTML sunulur.
+export async function generateStaticParams() {
+  const products = await prisma.product.findMany({
+    select: { slug: true }, // Sadece slug'ları çekerek performansı koruyoruz
+  });
+
+  return products.map((product) => ({
+    slug: product.slug,
+  }));
 }
 
 // 1. METADATA (DB Bağlantılı ve Optimize Edilmiş)
@@ -146,14 +161,17 @@ export default async function ProductPage({ params }: PageProps) {
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4">
-              <Link 
-                href={product.amazonLink || '#'}
-                target="_blank"
-                className="flex-1 bg-[#1C3A25] hover:bg-[#2C5F2D] text-white text-sm font-bold uppercase tracking-[0.15em] py-5 px-8 rounded-sm text-center transition-all duration-300 shadow-xl shadow-emerald-900/20 flex items-center justify-center gap-3"
-              >
-                Buy on Amazon
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
-              </Link>
+              {product.amazonLink && (
+                <Link 
+                  href={product.amazonLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-1 bg-[#1C3A25] hover:bg-[#2C5F2D] text-white text-sm font-bold uppercase tracking-[0.15em] py-5 px-8 rounded-sm text-center transition-all duration-300 shadow-xl shadow-emerald-900/20 flex items-center justify-center gap-3"
+                >
+                  Buy on Amazon
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
+                </Link>
+              )}
               
               <Link 
                 href="/contact"

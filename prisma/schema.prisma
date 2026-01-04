@@ -7,6 +7,11 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Role {
+  USER
+  ADMIN
+}
+
 model Product {
   id               String   @id @default(cuid())
   slug             String   @unique
@@ -14,10 +19,10 @@ model Product {
   category         String
   shortDescription String
   description      String   @db.Text
-  price            Float
+  price            Decimal  @db.Decimal(10, 2)
   currency         String   @default("USD")
-  amazonLink       String
-  
+  amazonLink       String?
+
   images           String[] 
   features         String[]
   
@@ -64,7 +69,7 @@ model User {
   emailVerified DateTime?
   image         String?
   password      String?   // Email/Password girişi için gerekli
-  role          String    @default("USER") // ADMIN veya USER ayrımı için
+  role          Role      @default(USER) // ADMIN veya USER ayrımı için
   accounts      Account[]
   sessions      Session[]
 }

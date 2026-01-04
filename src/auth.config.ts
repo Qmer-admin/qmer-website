@@ -10,11 +10,14 @@ export const authConfig = {
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user;
       const isOnAdmin = nextUrl.pathname.startsWith("/admin");
+      // TypeScript için geçici casting, birazdan types dosyası ile kalıcı çözeceğiz
+      const userRole = (auth?.user as any)?.role;
 
       // Eğer kullanıcı /admin sayfasına gitmeye çalışıyorsa
       if (isOnAdmin) {
-        if (isLoggedIn) return true; // Giriş yapmışsa izin ver
-        return false; // Yapmamışsa login sayfasına at
+        // Sadece giriş yapmış VE rolü ADMIN olanlar girebilir
+        if (isLoggedIn && userRole === 'ADMIN') return true;
+        return false; // Yetkisiz erişim, login sayfasına yönlendir
       }
       
       return true; // Diğer sayfalar herkese açık

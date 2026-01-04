@@ -1,3 +1,4 @@
+// src/app/api/contact/route.ts
 import { NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
 
@@ -34,7 +35,7 @@ export async function POST(request: Request) {
       html: `
         <div style="font-family: sans-serif; padding: 20px; border: 1px solid #eee; border-radius: 10px;">
           <h2 style="color: #064E3B;">New Message from Qmer.us</h2>
-          <p><strong>From:</strong> ${firstName} ${lastName}</p>
+          <p><strong>From:</strong> ${firstName || 'Guest'} ${lastName || ''}</p>
           <p><strong>Email:</strong> ${email}</p>
           <p><strong>Subject:</strong> ${subject}</p>
           <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">

@@ -1,3 +1,5 @@
+// src/app/(main)/privacy/page.tsx
+
 import React from 'react';
 import { siteConfig } from '@/lib/data';
 

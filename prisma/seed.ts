@@ -1,6 +1,6 @@
 // prisma/seed.ts
 
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient, Role } from '@prisma/client'
 import { products } from '../src/lib/data' // Mevcut ürün datan
 import bcrypt from 'bcryptjs'
 
@@ -44,7 +44,7 @@ async function main() {
       email: 'admin@qmer.us',
       name: 'Burak Taskin',
       password: hashedPassword,
-      role: 'ADMIN', // Rolü kesinlikle ADMIN olmalı
+      role: Role.ADMIN, // Enum kullanımı (Type-safe)
     },
   })
 

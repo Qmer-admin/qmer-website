@@ -1,4 +1,4 @@
-// src/app/collections/page.tsx
+// src/app/(main)/collections/page.tsx
 
 import { prisma } from '@/lib/db';
 import CollectionsClient from './CollectionsClient';
@@ -9,13 +9,13 @@ export const metadata: Metadata = {
   description: 'Explore our range of premium, organic, and scientifically backed skincare products.',
 };
 
+// Sayfanın her saat başı güncellenmesini sağlar (ISR)
+export const revalidate = 3600;
+
 export default async function CollectionsPage() {
   
   // 1. Veritabanından Tüm Ürünleri Çek
   const rawProducts = await prisma.product.findMany({
-    where: {
-        stock: true // Sadece stokta olanları listelemek istersen
-    },
     orderBy: {
       createdAt: 'desc'
     }

@@ -1,5 +1,13 @@
+// src/app/(main)/about/page.tsx
+
 import Image from 'next/image';
 import React from 'react';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: "About Us",
+  description: "Discover the story behind ORWEY-M and QMER LLC. We blend ancient Mediterranean traditions with modern science for pure, effective skincare.",
+};
 
 export default function AboutPage() {
   return (

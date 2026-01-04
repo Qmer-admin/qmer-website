@@ -1,41 +1,51 @@
-// src/app/page.tsx
+// src/app/(main)/page.tsx
 
 import { prisma } from '@/lib/db'; // Statik data yerine Singleton Prisma
 import ProductCard from '@/components/ProductCard';
 import Image from 'next/image';
 import Link from 'next/link';
+import { Product } from '@/types';
+
+// Sayfanın her 3600 saniyede (1 saat) bir sunucuda yeniden oluşturulmasını sağlar.
+// Bu sayede yeni eklenen ürünler build almadan siteye yansır.
+export const revalidate = 3600;
 
 // Database işlemi olduğu için component async olmak zorunda
 export default async function Home() {
   
   // --- MANTIK KATMANI (SERVER SIDE) ---
+  let displayProducts: Product[] = [];
   
-  // 1. Adım: "isNew" olarak işaretlenmiş, stokta olan ürünleri çek
-  let rawProducts = await prisma.product.findMany({
-    where: { 
-      isNew: true,
-      stock: true 
-    },
-    take: 3,
-    orderBy: { createdAt: 'desc' }
-  });
-
-  // 2. Adım (Fallback): Eğer hiç yeni ürün yoksa, en son eklenen 3 ürünü çek
-  if (rawProducts.length === 0) {
-    rawProducts = await prisma.product.findMany({
-      where: { stock: true },
+  try {
+    // 1. Adım: "isNew" olarak işaretlenmiş, stokta olan ürünleri çek
+    let rawProducts = await prisma.product.findMany({
+      where: { 
+        isNew: true,
+        stock: true 
+      },
       take: 3,
       orderBy: { createdAt: 'desc' }
     });
-  }
 
-  // 3. Adım: Type Casting (Prisma -> UI)
-  // Prisma Decimal döner, UI Number bekler. String currency Union Type'a zorlanır.
-  const displayProducts = rawProducts.map((p) => ({
-    ...p,
-    price: Number(p.price),
-    currency: p.currency as "USD" | "EUR"
-  }));
+    // 2. Adım (Fallback): Eğer hiç yeni ürün yoksa, en son eklenen 3 ürünü çek
+    if (rawProducts.length === 0) {
+      rawProducts = await prisma.product.findMany({
+        where: { stock: true },
+        take: 3,
+        orderBy: { createdAt: 'desc' }
+      });
+    }
+
+    // 3. Adım: Type Casting (Prisma -> UI)
+    displayProducts = rawProducts.map((p) => ({
+      ...p,
+      price: Number(p.price),
+      currency: p.currency as "USD" | "EUR"
+    }));
+  } catch (error) {
+    console.error("Failed to fetch products:", error);
+    // Hata durumunda displayProducts boş dizi olarak kalır, site çökmez.
+  }
 
   return (
     <div className="bg-[#FDFCF8]">
