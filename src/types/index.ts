@@ -8,6 +8,8 @@ export interface Product {
   description: string; // Detay sayfası için
   price: number;
   currency: 'USD' | 'EUR';
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
   amazonLink: string;
   images: string[]; // Array yapısında
   features: string[];
