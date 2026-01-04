@@ -1,15 +1,25 @@
+// src/components/Navbar.tsx
 'use client';
+
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { navLinks } from '@/lib/data';
-import { usePathname } from 'next/navigation';
+import { usePathname } from 'next/navigation'; 
 
 const Navbar = () => {
+  // --- 1. HOOK'LAR VE STATE'LER ---
+  const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const pathname = usePathname();
 
+  // --- 2. KRİTİK KONTROL: Admin veya Login sayfasındaysak Navbar'ı gizle ---
+  // Bu kontrolü hook'lardan hemen sonra, return'den önce yapıyoruz.
+  if (pathname.startsWith('/admin') || pathname.startsWith('/login')) {
+    return null;
+  }
+
+  // --- 3. SCROLL MANTIĞI ---
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
@@ -18,10 +28,11 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // --- 4. GÖRÜNÜM AYARLARI ---
   const isHome = pathname === '/';
+  // Eğer anasayfadaysak ve scroll yapılmamışsa şeffaf olsun
   const isTransparent = isHome && !isScrolled;
 
-  // RENK AYARLARI
   // drop-shadow-lg yaptık: Yazının arkasına daha belirgin gölge
   const textColorClass = isTransparent 
     ? "text-white hover:text-emerald-200 drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)]" 
@@ -34,8 +45,7 @@ const Navbar = () => {
         : 'bg-white/95 backdrop-blur-md py-4 shadow-sm border-stone-100'
     }`}>
       
-      {/* GİZLİ KAHRAMAN: Okunabilirlik Gradienti (GÜÇLENDİRİLDİ) */}
-      {/* from-black/70 yaptık: Üst tarafı daha karanlık ki beyaz yazı patlasın */}
+      {/* GİZLİ KAHRAMAN: Okunabilirlik Gradienti */}
       {isTransparent && (
         <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/20 to-transparent -z-10 h-40 pointer-events-none transition-opacity duration-500"></div>
       )}
@@ -53,7 +63,6 @@ const Navbar = () => {
                 />
             </div>
             <div className="flex flex-col">
-                {/* Logo metni de daha kalın ve gölgeli */}
                 <h1 className={`font-serif font-extrabold tracking-tighter transition-colors duration-300 ${isScrolled ? 'text-xl' : 'text-2xl'} ${isTransparent ? 'text-white drop-shadow-md' : 'text-stone-900'}`}>
                 QMER
                 </h1>
@@ -63,7 +72,7 @@ const Navbar = () => {
             </div>
         </Link>
 
-        {/* DESKTOP MENU - GÜÇLENDİRİLDİ */}
+        {/* DESKTOP MENU */}
         <div className="hidden md:flex items-center gap-14">
           {navLinks.map((link) => (
             <Link 
@@ -71,12 +80,9 @@ const Navbar = () => {
               href={link.href} 
               className="relative group py-2"
             >
-              {/* font-extrabold: İyice kalın */}
-              {/* text-[15px]: Bir tık daha büyük */}
               <span className={`text-[15px] font-serif font-extrabold uppercase tracking-[0.15em] transition-colors duration-300 ${textColorClass}`}>
                 {link.name}
               </span>
-              
               <span className={`absolute bottom-0 left-0 w-0 h-[3px] transition-all duration-300 group-hover:w-full ${isTransparent ? 'bg-white shadow-[0_0_10px_rgba(255,255,255,0.8)]' : 'bg-emerald-800'}`}></span>
             </Link>
           ))}
