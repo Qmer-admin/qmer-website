@@ -85,7 +85,7 @@ const Navbar = () => {
         {/* CTA BUTONU */}
         <div className="hidden md:block">
             <Link 
-                href="/orweym" 
+                href="/collections" 
                 className={`px-9 py-3.5 rounded-full text-[12px] font-black uppercase tracking-widest transition-all duration-300 border shadow-xl ${
                     isTransparent
                     ? 'bg-white text-stone-900 border-white hover:bg-emerald-900 hover:text-white hover:border-emerald-900 hover:shadow-2xl'
@@ -121,7 +121,7 @@ const Navbar = () => {
             ))}
             <div className="w-12 h-px bg-stone-200 mx-auto my-8"></div>
             <Link 
-                href="/orweym"
+                href="/collections"
                 onClick={() => setIsOpen(false)} 
                 className="text-sm font-bold uppercase tracking-widest bg-stone-900 text-white px-10 py-4 rounded-full shadow-xl"
             >

@@ -1,15 +1,19 @@
-import { MetadataRoute } from "next";
-import { products } from "@/lib/data";
+// src/app/sitemap.ts
 
-export default function sitemap(): MetadataRoute.Sitemap {
-    const baseURL = 'https://qmer.us'; // DİKKAT: 'htpps' değil 'https' olmalı
+import { MetadataRoute } from "next";
+import { prisma } from "@/lib/db"; // Statik data yerine DB bağlantısı
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+    const baseURL = 'https://qmer.us';
 
     // 1. Statik sayfalar
     const routes = [
         '',
         '/about',
-        '/orweym',
+        '/collections',
         '/contact',
+        '/privacy', // Varsa eklenmeli
+        '/terms',   // Varsa eklenmeli
     ].map((route) => ({
         url: `${baseURL}${route}`,
         lastModified: new Date(),
@@ -17,10 +21,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
         priority: route === '' ? 1 : 0.8,
     }));
 
-    // 2. Dinamik Ürün Sayfaları (EKSİK OLAN KISIM BU)
+    // 2. Dinamik Ürün Sayfaları (DB'den Çekilen)
+    // Sadece slug ve update tarihini çekiyoruz (Query Optimization)
+    const products = await prisma.product.findMany({
+        select: {
+            slug: true,
+            updatedAt: true,
+        },
+    });
+
     const productRoutes = products.map((product) => ({
-        url: `${baseURL}/orweym/${product.slug}`,
-        lastModified: new Date(),
+        url: `${baseURL}/collections/${product.slug}`,
+        lastModified: product.updatedAt, // Google için gerçek içerik tarihi
         changeFrequency: 'weekly' as const,
         priority: 0.9,
     }));

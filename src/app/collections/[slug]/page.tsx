@@ -1,58 +1,71 @@
-// src/app/orweym/[slug]/page.tsx
+// src/app/collections/[slug]/page.tsx
 
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { products } from '@/lib/data';
+import { prisma } from '@/lib/db'; // Data yerine DB
 import { Metadata } from 'next';
 
-// 1. TİP TANIMI GÜNCELLENDİ (Promise eklendi)
 interface PageProps {
   params: Promise<{
     slug: string;
   }>;
 }
 
-// 2. METADATA KISMI GÜNCELLENDİ (await eklendi)
+// 1. METADATA (DB Bağlantılı ve Optimize Edilmiş)
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  // Params'ı bekle (await)
   const { slug } = await params;
   
-  const product = products.find((p) => p.slug === slug);
+  // Sadece meta tagler için gerekli veriyi çekiyoruz (Performans)
+  const product = await prisma.product.findUnique({
+    where: { slug },
+    select: {
+      name: true,
+      shortDescription: true
+    }
+  });
 
   if (!product) {
-    return { title: 'Product Not Found | ORWEY-M' };
+    return { title: 'Product Not Found | QMER' };
   }
 
   return {
-    title: `${product.name} | ORWEY-M Premium Skincare`,
+    title: `${product.name} | QMER Premium Skincare`,
     description: product.shortDescription,
   };
 }
 
-// 3. SAYFA BİLEŞENİ GÜNCELLENDİ (await eklendi)
+// 2. ANA COMPONENT
 export default async function ProductPage({ params }: PageProps) {
-  // Params'ı bekle (await)
   const { slug } = await params;
 
-  // URL'deki slug ile veriyi eşleştir
-  const product = products.find((p) => p.slug === slug);
+  // DB'den ürünü çek
+  const rawProduct = await prisma.product.findUnique({
+    where: { slug }
+  });
 
-  // Ürün bulunamazsa 404 sayfasına at
-  if (!product) {
+  // Ürün yoksa 404
+  if (!rawProduct) {
     notFound();
   }
+
+  // Type Casting (Prisma -> UI)
+  const product = {
+    ...rawProduct,
+    price: Number(rawProduct.price),
+    currency: rawProduct.currency as "USD" | "EUR"
+  };
 
   return (
     <div className="min-h-screen bg-[#FDFCF8] pt-32 pb-20">
       <div className="container mx-auto px-6 md:px-12">
         
-        {/* Breadcrumb */}
+        {/* Breadcrumb - Linkler güncellendi (/collections) */}
         <nav className="text-xs font-bold text-stone-400 uppercase tracking-widest mb-8 flex items-center gap-2">
           <Link href="/" className="hover:text-emerald-800 transition-colors">Home</Link>
           <span>/</span>
-          <Link href="/orweym" className="hover:text-emerald-800 transition-colors">Collection</Link>
+          <Link href="/collections" className="hover:text-emerald-800 transition-colors">Collection</Link>
           <span>/</span>
           <span className="text-stone-800">{product.name}</span>
         </nav>
@@ -68,14 +81,21 @@ export default async function ProductPage({ params }: PageProps) {
                 </span>
               )}
               
-              <Image
-                src={product.images[0]}
-                alt={product.name}
-                fill
-                priority
-                className="object-cover md:object-contain p-8 transition-transform duration-700 group-hover:scale-105"
-                sizes="(max-width: 768px) 100vw, 50vw"
-              />
+              {/* Image array kontrolü */}
+              {product.images && product.images.length > 0 ? (
+                <Image
+                    src={product.images[0]}
+                    alt={product.name}
+                    fill
+                    priority
+                    className="object-cover md:object-contain p-8 transition-transform duration-700 group-hover:scale-105"
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center bg-stone-100 text-stone-400">
+                    No Image Available
+                </div>
+              )}
             </div>
           </div>
 
@@ -83,7 +103,7 @@ export default async function ProductPage({ params }: PageProps) {
           <div className="w-full lg:w-1/2 flex flex-col justify-center">
             
             <span className="text-emerald-700 font-bold tracking-[0.2em] text-[10px] uppercase mb-4 block">
-              Orwey-M Signature Series
+              QMER Signature Series
             </span>
 
             <h1 className="text-3xl md:text-5xl font-serif text-gray-900 mb-6 leading-tight">
@@ -112,10 +132,11 @@ export default async function ProductPage({ params }: PageProps) {
               <p>{product.description}</p>
             </div>
 
+            {/* Features (Array Kontrolü ile) */}
             <div className="mb-10">
               <h3 className="text-xs font-bold text-gray-900 uppercase tracking-widest mb-4">Key Benefits</h3>
               <ul className="space-y-3">
-                {product.features.map((feature, index) => (
+                {product.features && product.features.map((feature, index) => (
                   <li key={index} className="flex items-center gap-3 text-sm text-gray-700 font-light">
                     <svg className="w-4 h-4 text-[#2C5F2D]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
                     {feature}
@@ -126,7 +147,7 @@ export default async function ProductPage({ params }: PageProps) {
 
             <div className="flex flex-col sm:flex-row gap-4">
               <Link 
-                href={product.amazonLink}
+                href={product.amazonLink || '#'}
                 target="_blank"
                 className="flex-1 bg-[#1C3A25] hover:bg-[#2C5F2D] text-white text-sm font-bold uppercase tracking-[0.15em] py-5 px-8 rounded-sm text-center transition-all duration-300 shadow-xl shadow-emerald-900/20 flex items-center justify-center gap-3"
               >

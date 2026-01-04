@@ -41,7 +41,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
         </div>
         
         {/* Link sarmalaması (Karta tıklayınca gitmesi için başlığı linkledim) */}
-        <Link href={`/orweym/${product.slug}`} className="block">
+        <Link href={`/collections/${product.slug}`} className="block">
             <h3 className="text-xl font-serif text-gray-900 mb-3 leading-snug group-hover:text-emerald-800 transition-colors">
             {product.name}
             </h3>

@@ -11,11 +11,13 @@ export const siteConfig = {
 
 export const navLinks = [
   { name: "Home", href: "/" },
-  { name: "Collection", href: "/orweym" },
+  { name: "Collection", href: "/collections" },
   { name: "About", href: "/about" },
   { name: "Contact", href: "/contact" },
 ];
 
+// Bu liste artık veritabanına aktarıldı (seed.ts üzerinden).
+// İleride veritabanından çekeceğimiz için burayı referans olarak tutuyoruz.
 export const products: Product[] = [
   {
     id: "aha-bha-serum",
@@ -27,7 +29,7 @@ export const products: Product[] = [
     price: 5.99,
     currency: "USD",
     amazonLink: "https://www.amazon.com/dp/B0F6V7D91G",
-    images: ["/images/products/aha-serum.png"], // Güncellendi
+    images: ["/images/products/aha-serum.png"], 
     features: ["Exfoliating", "Brightening", "Night Care"],
     stock: true,
     isNew: true
@@ -42,7 +44,7 @@ export const products: Product[] = [
     price: 7.99,
     currency: "USD",
     amazonLink: "https://www.amazon.com/dp/B0F67F4JC8",
-    images: ["/images/products/vitamin-c.jpg"], // Güncellendi
+    images: ["/images/products/vitamin-c.jpg"], 
     features: ["Anti-Aging", "Antioxidant", "Daily Use"],
     stock: true,
     isNew: true
@@ -57,7 +59,7 @@ export const products: Product[] = [
     price: 7.99,
     currency: "USD",
     amazonLink: "https://www.amazon.com/dp/B0F6VCJTCY",
-    images: ["/images/products/rosemary.jpg"], // Güncellendi
+    images: ["/images/products/rosemary.jpg"], 
     features: ["Organic", "Hair Growth", "Scalp Care"],
     stock: true,
     isNew: true

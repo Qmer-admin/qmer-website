@@ -22,7 +22,7 @@ const Footer = () => {
             <div>
                  <h4 className="font-serif font-medium mb-6 text-white text-lg">Explore</h4>
                  <ul className="space-y-3 text-sm text-stone-400">
-                    <li><Link href="/orweym" className="hover:text-emerald-400 transition-colors">Collection</Link></li>
+                    <li><Link href="/collections" className="hover:text-emerald-400 transition-colors">Collection</Link></li>
                     <li><Link href="/about" className="hover:text-emerald-400 transition-colors">Our Story</Link></li>
                     <li><Link href="/contact" className="hover:text-emerald-400 transition-colors">Contact</Link></li>
                  </ul>
