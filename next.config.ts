@@ -1,8 +1,15 @@
+// next.config.ts
+
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* Burası boş veya varsa diğer özel ayarların kalabilir */
-  /* eslint ve typescript bloklarını tamamen siliyoruz */
+  /* Diğer mevcut ayarların... */
+  
+  experimental: {
+    serverActions: {
+      bodySizeLimit: "10mb", // Limiti 10MB'a çıkardık
+    },
+  },
 };
 
 export default nextConfig;

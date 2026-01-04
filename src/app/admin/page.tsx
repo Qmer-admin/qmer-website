@@ -89,7 +89,7 @@ export default async function AdminDashboard() {
                            Out of Stock
                         </span>
                     )}
-                </td>               
+                </td>                
 <td className="p-4 text-right flex justify-end items-center gap-2">
     {/* 1. DUPLICATE BUTONU */}
     <form action={duplicateProduct}>
