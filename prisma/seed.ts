@@ -37,12 +37,19 @@ async function main() {
   // Şifreyi hashle (Güvenlik için)
   const hashedPassword = await bcrypt.hash('Admin123!', 10) // Şifre: Admin123!
 
-  await prisma.user.upsert({
-    where: { email: 'admin@qmer.us' },
-    update: {
-      password: hashedPassword, // Şifreyi her seed işleminde güncelle (Şifre karışıklığını önlemek için)
-    },
-    create: {
+  // Önce mevcut admin varsa silelim (Temiz başlangıç için)
+  try {
+    await prisma.user.delete({
+      where: { email: 'admin@qmer.us' }
+    })
+    console.log('🗑️  Old admin deleted.')
+  } catch (e) {
+    // Kullanıcı yoksa hata verir, önemli değil devam et
+  }
+
+  // Şimdi sıfırdan oluşturalım
+  await prisma.user.create({
+    data: {
       email: 'admin@qmer.us',
       name: 'Burak Taskin',
       password: hashedPassword,

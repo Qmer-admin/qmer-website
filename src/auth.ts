@@ -19,17 +19,24 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
+        console.log("🔐 Login Attempt for:", credentials?.email); // LOG: Giriş denemesi
+
         if (!credentials?.email || !credentials?.password) {
+          console.log("❌ Missing credentials");
           return null;
         }
 
+        // Email'i küçük harfe çevir (Kullanıcı Admin@... yazarsa hata almasın)
+        const email = (credentials.email as string).toLowerCase();
+
         const user = await prisma.user.findUnique({
           where: {
-            email: credentials.email as string,
+            email: email,
           },
         });
 
         if (!user || !user.password) {
+          console.log("❌ User not found in DB or no password set");
           return null;
         }
 
@@ -39,9 +46,11 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         );
 
         if (!isPasswordValid) {
+          console.log("❌ Password mismatch (Şifre uyuşmuyor)");
           return null;
         }
 
+        console.log("✅ Login Successful!");
         return user;
       },
     }),
