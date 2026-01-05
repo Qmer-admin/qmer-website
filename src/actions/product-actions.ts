@@ -27,7 +27,7 @@ export async function createProduct(formData: FormData) {
 
   try {
     await prisma.product.create({
-      data: { name, slug, category, price, currency, stock, isNew, shortDescription, description, amazonLink, images, features },
+      data: { name, slug, category, price, currency, stock, isNew, shortDescription, description, amazonLink: amazonLink as any, images, features },
     });
   } catch (error) {
     console.error("Create Error:", error);
@@ -120,7 +120,7 @@ export async function updateProduct(formData: FormData) {
   try {
     await prisma.product.update({
       where: { id },
-      data: { name, slug, category, price, currency, stock, isNew, shortDescription, description, amazonLink, images, features },
+      data: { name, slug, category, price, currency, stock, isNew, shortDescription, description, amazonLink: amazonLink as any, images, features },
     });
   } catch (error) {
     console.error("Update Error:", error);
