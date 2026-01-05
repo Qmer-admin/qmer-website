@@ -4,7 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { auth, signOut } from "@/auth"; 
 import { redirect } from "next/navigation";
-import "@/app/globals.css"; // Global stilleri dahil etmeyi unutmayın
+import "@/app/globals.css"; 
 
 // Logout işlemi için Server Action
 async function handleSignOut() {
@@ -19,10 +19,23 @@ export default async function AdminRootLayout({
 }) {
   const session = await auth();
 
-  // Güvenlik Katmanı
+  // --- GÜVENLİK KATMANI GÜNCELLEMESİ ---
+  
+  // 1. Adım: Kullanıcı giriş yapmış mı?
   if (!session?.user) {
     redirect("/login");
   }
+
+  // 2. Adım: Kullanıcı ADMIN yetkisine sahip mi?
+  // Not: TypeScript uyarısı almamak için 'as any' kullanıyoruz veya
+  // next-auth.d.ts dosyasında type tanımlaması yapmış olman gerekir.
+  // Garanti olsun diye casting yapıyoruz:
+  if ((session.user as any).role !== "ADMIN") {
+    // Admin değilse ana sayfaya postala
+    redirect("/");
+  }
+  
+  // --- GÜVENLİK BİTİŞ ---
 
   return (
     <html lang="en">
