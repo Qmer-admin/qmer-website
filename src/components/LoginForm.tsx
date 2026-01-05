@@ -1,4 +1,5 @@
 // src/components/LoginForm.tsx
+
 "use client";
 
 import { useState } from "react";
@@ -9,6 +10,8 @@ export default function LoginForm() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  // ... importlar aynı
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -26,20 +29,20 @@ export default function LoginForm() {
     }
 
     try {
-      // NextAuth Credentials Provider'ı tetikliyoruz
       const result = await signIn("credentials", {
         email,
         password,
-        redirect: false, // Sayfa yenilenmesini engellemek için false
+        redirect: false,
       });
 
       if (result?.error) {
         setError("Invalid email or password.");
         setLoading(false);
       } else {
-        // Başarılı giriş -> Admin Paneline yönlendir
-        router.push("/admin");
-        router.refresh(); // Session'ı güncellemesi için
+        // ÇÖZÜM BURADA:
+        // router.push("/admin") YERİNE:
+        // Tarayıcıyı zorla yönlendiriyoruz. Bu, cookie'nin kesin olarak işlenmesini sağlar.
+        window.location.href = "/admin"; 
       }
     } catch (err) {
       console.log(err);
@@ -47,6 +50,7 @@ export default function LoginForm() {
       setLoading(false);
     }
   };
+// ...
 
   return (
     <div className="w-full max-w-md bg-white p-8 shadow-2xl border border-stone-100 rounded-sm animate-fadeIn">
