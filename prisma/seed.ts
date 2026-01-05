@@ -1,19 +1,32 @@
 // prisma/seed.ts
 
-import { PrismaClient, Role } from '@prisma/client'
-import { products } from '../src/lib/data' // Mevcut ürün datan
+import { PrismaClient } from '@prisma/client'
+import { products } from '../src/lib/data' // data.ts dosyanın yeri doğru olmalı
 import bcrypt from 'bcryptjs'
 
 const prisma = new PrismaClient()
 
 async function main() {
+  console.log('🚀 Seeding process started...')
+
+  // 1. ÜRÜNLERİ EKLE
+  console.log('📦 Seeding products...')
   
-  // 1. ÜRÜNLERİ SEED ET (Mevcut logic)
-  console.log('🌱 Seeding products...')
   for (const product of products) {
+    // data.ts'deki 'id' string (örn: "aha-bha-serum") veritabanındaki ID formatına (UUID/CUID) uymazsa
+    // Prisma hata verebilir. Bu yüzden ID'yi create işlemine dahil etmiyoruz, DB kendi üretsin.
+    // Eşleşmeyi 'slug' üzerinden yapıyoruz.
+    
     await prisma.product.upsert({
       where: { slug: product.slug },
-      update: {}, // Zaten varsa dokunma
+      update: {
+        // Ürün zaten varsa bilgilerini data.ts'den güncelle (Fiyat vs. değişirse diye)
+        name: product.name,
+        description: product.description,
+        price: product.price,
+        stock: product.stock,
+        images: product.images,
+      },
       create: {
         slug: product.slug,
         name: product.name,
@@ -30,34 +43,30 @@ async function main() {
       },
     })
   }
+  console.log(`✅ ${products.length} products seeded.`)
 
-  // 2. ADMIN KULLANICISINI SEED ET (YENİ KISIM)
+  // 2. ADMIN KULLANICISINI EKLE
   console.log('👤 Seeding admin user...')
   
-  // Şifreyi hashle (Güvenlik için)
-  const hashedPassword = await bcrypt.hash('Admin123!', 10) // Şifre: Admin123!
+  const hashedPassword = await bcrypt.hash('Admin123!', 10)
 
-  // Önce mevcut admin varsa silelim (Temiz başlangıç için)
-  try {
-    await prisma.user.delete({
-      where: { email: 'admin@qmer.us' }
-    })
-    console.log('🗑️  Old admin deleted.')
-  } catch (e) {
-    // Kullanıcı yoksa hata verir, önemli değil devam et
-  }
-
-  // Şimdi sıfırdan oluşturalım
-  await prisma.user.create({
-    data: {
+  // Upsert kullanarak: Varsa şifresini güncelle, yoksa oluştur.
+  await prisma.user.upsert({
+    where: { email: 'admin@qmer.us' },
+    update: {
+      password: hashedPassword,
+      role: 'ADMIN', // Enum yerine String olarak güvenli geçiş
+      name: 'Burak Taskin'
+    },
+    create: {
       email: 'admin@qmer.us',
       name: 'Burak Taskin',
       password: hashedPassword,
-      role: Role.ADMIN, // Enum kullanımı (Type-safe)
+      role: 'ADMIN',
     },
   })
-
-  console.log('✅ Seeding completed.')
+  
+  console.log('✅ Admin user seeded (admin@qmer.us).')
 }
 
 main()
@@ -65,7 +74,7 @@ main()
     await prisma.$disconnect()
   })
   .catch(async (e) => {
-    console.error(e)
+    console.error('❌ Seed Error:', e)
     await prisma.$disconnect()
     process.exit(1)
   })

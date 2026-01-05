@@ -1,4 +1,5 @@
 // src/lib/data.ts
+
 import { Product } from '@/types';
 
 export const siteConfig = {
