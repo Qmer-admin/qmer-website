@@ -39,7 +39,9 @@ async function main() {
 
   await prisma.user.upsert({
     where: { email: 'admin@qmer.us' },
-    update: {}, // Zaten varsa dokunma
+    update: {
+      password: hashedPassword, // Şifreyi her seed işleminde güncelle (Şifre karışıklığını önlemek için)
+    },
     create: {
       email: 'admin@qmer.us',
       name: 'Burak Taskin',
