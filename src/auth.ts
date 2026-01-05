@@ -29,11 +29,18 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         // Email'i küçük harfe çevir (Kullanıcı Admin@... yazarsa hata almasın)
         const email = (credentials.email as string).toLowerCase();
 
-        const user = await prisma.user.findUnique({
-          where: {
-            email: email,
-          },
-        });
+        let user;
+        try {
+          user = await prisma.user.findUnique({
+            where: {
+              email: email,
+            },
+          });
+        } catch (error) {
+          console.error("❌ Database Error:", error);
+          // Veritabanı hatası varsa null dönerek girişin başarısız olduğunu belirtelim
+          return null;
+        }
 
         if (!user || !user.password) {
           console.log("❌ User not found in DB or no password set");
